@@ -1,0 +1,5 @@
+{
+    "title": "Schema Definitions",
+    "pages": ["secondary_indexing", "default_values"],
+    "defaultOpen": false
+}

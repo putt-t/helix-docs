@@ -1,0 +1,42 @@
+---
+title: Secondary Indexing
+description: Indexing a field of a node as a global secondary index.
+---
+
+To do this, you can use the `INDEX` keyword.
+
+```text tab="Helix"
+N::NodeType {
+  INDEX field1: String,
+  field2: U32
+}
+```
+
+This internally creates a table for the indexed field. 
+To query a node by the indexed field, you can use object syntax:
+
+```text tab="Helix"
+QUERY get_by_index(index_field: String) {
+    node <- N<NodeType>({field1: index_field})
+    RETURN node
+}
+```
+
+```py tab="Python"
+class get_by_index(Query):
+    def __init__(self, index_field: str):
+        super().__init__()
+        self.index_field = index_field
+    
+    def query(self) -> List[Payload]:
+        return [{"index_field": self.index_field}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_by_index("<index_field>"))
+```
+
+**Note:** You can currectly only use indexing with nodes. 
+Indexing for edges and vectors is not supported yet.
