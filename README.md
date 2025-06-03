@@ -2,6 +2,6 @@
 
 internal use/helper built to help us with netwrxk project
 
-nathaphat t. and gahn w.
+nathaphat taleongpong and gahn wuwong
 
 [docs](https://helix-docs-flame.vercel.app/)
