@@ -2,7 +2,7 @@
 export default function HomePage() {
     return (
         <main className="flex flex-1 flex-col justify-center text-center">
-            <p>built for internal use within netwrxk, but feel free to use it as a reference for your own use</p>
+            <p>we are converting helixdb queries and docs to python for assisting us in using it in netwrxk, but feel free to use it in helixdb docs!</p>
         </main>
     );
 }
