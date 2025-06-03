@@ -1,0 +1,57 @@
+---
+title: Operational Steps
+description: Manipulate and query your graph data with powerful operations.
+---
+Count operation:
+
+```text tab="Helix"
+QUERY user_statistics() =>
+    user_count <- N<User>::COUNT
+    RETURN user_count
+```
+
+```py tab="Python"
+class get_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+Range operation:
+
+#### Example ####
+user_count = db.query(user_statistics())
+print("User count:", user_count)
+```
+
+Range operations:
+
+```text tab="Helix"
+QUERY get_range(start: U32, end: U32) =>
+    range <- N<User>::RANGE(start, end)
+    RETURN range
+```
+
+```py tab="Python"
+class get_range(Query):
+    def __init__(self, start: int, end: int):
+        super().__init__()
+        self.start = start
+        self.end = end
+    
+    def query(self) -> List[Payload]:
+        return [{"start": self.start, "end": self.end}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+range = db.query(get_range(1, 3))
+print("Range:", range)
+```
+
+**Note:** DEDUP, ORDER_BY, GROUP_BY, Pattern matching doesn't exist yet.

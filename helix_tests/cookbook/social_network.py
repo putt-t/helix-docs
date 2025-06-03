@@ -16,7 +16,6 @@ class create_user(Query):
     def query(self) -> List[Payload]:
         return [{"name": self.name, "age": self.age, "email": self.email, "now": self.now}]
             
-    
     def response(self, response):
         return response
 
