@@ -1,5 +1,6 @@
+
 QUERY create_user(name: String, age: U32, email: String, now: I32) =>
-    user <- AddN<User>({name, age, email, created_at: now, updated_at: now})
+    user <- AddN<User>({name: name, age: age, email: email, created_at: now, updated_at: now})
     RETURN user
 
 QUERY create_follow(follower_id: ID, followed_id: ID, now: I32) =>
@@ -10,7 +11,7 @@ QUERY create_follow(follower_id: ID, followed_id: ID, now: I32) =>
 
 QUERY create_post(user_id: ID, content: String, now: I32) =>
     user <- N<User>(user_id)
-    post <- AddN<Post>({content, created_at: now, updated_at: now})
+    post <- AddN<Post>({content: content, created_at: now, updated_at: now})
     AddE<Created>({created_at: now})::From(user)::To(post)
     RETURN post
 
