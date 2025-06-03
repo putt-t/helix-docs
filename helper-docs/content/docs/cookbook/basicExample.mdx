@@ -1,0 +1,77 @@
+---
+title: A basic example
+---
+A basic example of how to use HelixDB
+
+We’re going to create a simple social network where users can follow each other and create posts.
+
+### Step 1: Define the schema in schema.hx      
+We’re going to define the schema for our social network in `schema.hx`. 
+We’re going to have `User` nodes where users can `Follow` other users. 
+We’re also going to have `Post` nodes where users can `Create` posts.
+
+```
+N::User {
+    name: String,
+    age: U32,
+    email: String,
+    created_at: I32,
+    updated_at: I32,
+}
+
+N::Post {
+    content: String,
+    created_at: I32,
+    updated_at: I32,
+}
+
+E::Follows {
+    From: User,
+    To: User,
+    Properties: {
+        since: I32,
+    }
+}
+
+E::Created {
+    From: User,
+    To: Post,
+    Properties: {
+        created_at: I32,
+    }
+}
+```
+
+### Step 2: Inserting data
+Creating a user is done by inserting a new node into the graph.
+
+<table>
+<tr>
+<th>Helix</th>
+<th>Python</th>
+</tr>
+<tr>
+<td>
+  
+```
+QUERY CreateUser(name: String, age: U32, email: String, now: I32) =>
+    user <- AddN<User>({name, age, email, created_at: now, updated_at: now})
+    RETURN user
+```
+  
+</td>
+<td>
+
+```
+{
+    "name": "mary",
+    "age": 25,
+    "email": "mary@example.com",
+    "created_at": 1722528000,
+    "updated_at": 1722528000
+}
+```
+
+</td>
+</tr>
+</table>
