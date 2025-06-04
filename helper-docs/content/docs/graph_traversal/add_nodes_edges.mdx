@@ -1,0 +1,164 @@
+---
+title: Adding Nodes and Edges
+---
+## Creation Operations
+
+These operations allow you to add new elements to your graph.
+
+### `AddN`
+Create new nodes in your graph.
+
+```text tab="Helix"
+AddN<Type>
+AddN<Type>({properties})
+```
+
+**Example: Adding Nodes**
+
+```text tab="Helix"
+QUERY create_users() =>
+    // Create an empty user node
+    basic_user <- AddN<User>
+    
+    // You could also write it like this
+    AddN<User>
+    
+    RETURN basic_user
+
+QUERY create_detailed_users(name: String, age: U32, email: String) =>
+    // Create a detailed user node
+    detailed_user <- AddN<User>({name: name, age: age, email: email})
+    
+    RETURN detailed_user
+```
+
+```py tab="Python"
+class create_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(create_users())
+
+class create_detailed_users(Query):
+    def __init__(self, name: str, age: int, email: str):
+        super().__init__()
+        self.name = name
+        self.age = age
+        self.email = email
+    
+    def query(self) -> List[Payload]:
+        return [{"name": self.name, "age": self.age, "email": self.email}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(create_detailed_users("John", 30, "john@example.com"))
+```
+
+### `AddE`
+Create connections between nodes in your graph.
+
+```text tab="Helix"
+AddE<Type>::From(v1)::To(v2)
+AddE<Type>({properties})::From(v1)::To(v2)
+```
+
+**Example: Adding Edges**
+
+```text tab="Helix"
+QUERY create_relationships(user1ID: String, user2ID: String) =>
+    // Get the users by their IDs
+    user1 <- N<User>(user1ID)
+    user2 <- N<User>(user2ID)
+    
+    // Create a simple follows relationship
+    follows <- AddE<Follows>::From(user1)::To(user2)
+
+    RETURN follows
+        
+QUERY create_detailed_relationships(user1ID: String, user2ID: String, since: String, strength: F32, tags: [String]) =>
+    // Get the users by their IDs
+    user1 <- N<User>(user1ID)
+    user2 <- N<User>(user2ID)
+    
+    // Create a detailed friendship with properties
+    friendship <- AddE<Friends>(
+        {since: since, strength: strength, tags: tags}
+    )::From(user1)::To(user2)
+    
+    RETURN friendship
+```
+
+```py tab="Python"
+class create_relationships(Query):
+    def __init__(self, user1ID: str, user2ID: str):
+        super().__init__()
+        self.user1ID = user1ID
+        self.user2ID = user2ID
+    
+    def query(self) -> List[Payload]:
+        return [{"user1ID": self.user1ID, "user2ID": self.user2ID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(create_relationships("<user1ID>", "<user2ID>"))
+
+class create_detailed_relationships(Query):
+    def __init__(self, user1ID: str, user2ID: str, since: str, strength: float, tags: List[str]):
+        super().__init__()
+        self.user1ID = user1ID
+        self.user2ID = user2ID
+        self.since = since
+        self.strength = strength
+        self.tags = tags
+    
+    def query(self) -> List[Payload]:
+        return [{"user1ID": self.user1ID, "user2ID": self.user2ID, "since": self.since, "strength": self.strength, "tags": self.tags}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(create_detailed_relationships("<user1ID>", "<user2ID>", "<since>", <strength>, ["<tag1>", "<tag2>"]))
+```
+
+**Example: Adding Edges in a Traversal**
+You can also use the `AddE` operation in the middle of a traversal to add edges between a list of nodes or vectors.
+
+```text tab="Helix"
+QUERY create_friendships(user1ID: String, user2ID: String) =>
+    // This makes every user in the database follow the user with ID user1ID
+    user1 <- N<User>::AddE<Follows>::To(N(user1ID))
+    
+    // This makes user with userID2 follow every user in the database
+    user1 <- N<User>::AddE<Follows>::From(N(user1ID))
+    
+    RETURN friendship
+```
+
+```py tab="Python"
+class create_friendships(Query):
+    def __init__(self, user1ID: str, user2ID: str):
+        super().__init__()
+        self.user1ID = user1ID
+        self.user2ID = user2ID
+    
+    def query(self) -> List[Payload]:
+        return [{"user1ID": self.user1ID, "user2ID": self.user2ID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(create_friendships("<user1ID>", "<user2ID>"))
+```

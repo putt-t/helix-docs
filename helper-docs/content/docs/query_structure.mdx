@@ -1,0 +1,52 @@
+---
+title: Query Structure
+description: The structure of a query in HelixQL
+---
+### Basic Query Syntax
+HelixQL is built to be declarative query language that uses a 
+functional syntax to traverse the graph and vector data.
+
+Here, we use Python to deliver the query payload to the HelixDB 
+server as a `Query` object. It will then execute the Helix query.
+
+**Example Query Syntax:**
+```text tab="Helix"
+QUERY query_name(param1: Type, param2: Type) =>
+    result <- traversal_expression
+    RETURN result
+```
+
+### Helix Components:
+- `QUERY`: Keyword to start a query definition
+- `query_name`: Identifier for the query
+- `parameters`: Input parameters in parentheses
+- `Type`: Type of the parameter (e.g. String, I32, F64, Boolean, [Type] or schema Node/Edge)
+- `=>`: Separates query header from body
+- `result`: Result of the query
+- `<-`: Assignment operator
+- `RETURN`: Specifies output values
+
+```py tab="Python"
+class query_name(Query):
+    def __init__(self, param1: Type, param2: Type):
+        super().__init__()
+        self.param1 = param1
+        self.param2 = param2
+    
+    def query(self) -> List[Payload]:
+        return [{"param1": self.param1, "param2": self.param2}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(query_name("<param1>", "<param2>"))
+```
+
+### Python Components:
+- `class`: Defines a new class
+- `query_name`: Identifier for the query
+- `Query`: Base class for all queries
+- `__init__`: Constructor for the class
+- `query`: Sends the query payload
+- `response`: Handles the response from the server

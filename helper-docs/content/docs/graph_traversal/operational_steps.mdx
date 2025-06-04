@@ -11,7 +11,7 @@ QUERY user_statistics() =>
 ```
 
 ```py tab="Python"
-class get_users(Query):
+class user_statistics(Query):
     def __init__(self):
         super().__init__()
     
@@ -24,8 +24,7 @@ class get_users(Query):
 Range operation:
 
 #### Example ####
-user_count = db.query(user_statistics())
-print("User count:", user_count)
+db.query(user_statistics())
 ```
 
 Range operations:
@@ -50,8 +49,7 @@ class get_range(Query):
         return response
 
 #### Example ####
-range = db.query(get_range(1, 3))
-print("Range:", range)
+db.query(get_range(1, 3))
 ```
 
 **Note:** DEDUP, ORDER_BY, GROUP_BY, Pattern matching doesn't exist yet.

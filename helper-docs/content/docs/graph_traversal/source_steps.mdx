@@ -1,0 +1,91 @@
+---
+title: Source Steps
+---
+## Select Operations
+These operations serve as starting points for your graph traversals.
+
+### `N`
+Select nodes from your graph to begin traversal.
+
+```text tab="Helix"
+N<Type>(node_id)
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_users(userID: String) {
+    // Select all nodes
+    nodes <- N
+    
+    // Select all User nodes
+    users <- N<Users>
+    
+    // Select a specific User by ID
+    user <- N<User>(userID)
+    
+    // Select multiple Users by IDs
+    other_users <- N<Users>(userID, "other_uuid")
+    
+    RETURN nodes, users, user, other_users
+}
+```
+
+```py tab="Python"
+class get_users(Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_users("<userID>"))
+```
+
+### `E`
+Select edges from your graph to begin traversal.
+
+```text tab="Helix"
+E<Type>(edge_id)
+```
+
+**Example**
+
+```text tab="Helix"
+QUERY get_followers(edgeID: String) {
+    // Select all edges
+    edges <- E
+    
+    // Select all Follows edges
+    specific_edges <- E<Follows>
+    
+    // Select a specific Follows edge by ID
+    follow_edge <- E<Follows>(edgeID)
+    
+    // Select multiple Follows edges by IDs
+    other_edges <- E<Follows>(edgeID, "other_edge_id")
+    
+    RETURN edges, specific_edges, follow_edge, other_edges
+}
+```
+
+```py tab="Python"
+class get_followers(Query):
+    def __init__(self, edgeID: str):
+        super().__init__()
+        self.edgeID = edgeID
+
+    def query(self) -> List[Payload]:
+        return [{"edgeID": self.edgeID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_followers("<edgeID>"))
+```
