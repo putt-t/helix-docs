@@ -21,10 +21,9 @@ In the example below, the `age` field has not been provided when inserting the i
 the default value of `0` will be used.
 
 ```text tab="Helix"
-QUERY create_user(name: String) {
+QUERY create_user(name: String) =>
     user <- AddN<User>({name}) 
     RETURN user
-}
 ```
 
 ```py tab="Python"

@@ -15,10 +15,9 @@ Get the nodes connected by outgoing edges of specific type.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_user_following(userID: ID) {
+QUERY get_user_following(userID: ID) =>
     following <- N<User>(userID)::Out<Follows>
     RETURN following
-}
 ```
 
 ```py tab="Python"
@@ -49,10 +48,9 @@ Get the nodes connected by incoming edges of specific type.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_user_followers(userID: ID) {
+QUERY get_user_followers(userID: ID) =>
     followers <- N<User>(userID)::In<Follows>
     RETURN followers
-}
 ```
 
 ```py tab="Python"
@@ -81,10 +79,9 @@ Get the edges connected by outgoing edges of specific type.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_following_details(userID: ID) {
+QUERY get_following_details(userID: ID) =>
     following <- N<User>(userID)::OutE<Follows>
     RETURN following
-}
 ```
 
 ```py tab="Python"
@@ -113,10 +110,9 @@ Get the edges connected by incoming edges of specific type.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_followers_details(userID: ID) {
+QUERY get_followers_details(userID: ID) =>
     followers <- N<User>(userID)::InE<Follows>
     RETURN followers
-}
 ```
 
 ```py tab="Python"

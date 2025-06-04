@@ -16,10 +16,9 @@ This internally creates a table for the indexed field.
 To query a node by the indexed field, you can use object syntax:
 
 ```text tab="Helix"
-QUERY get_by_index(index_field: String) {
+QUERY get_by_index(index_field: String) =>
     node <- N<NodeType>({field1: index_field})
     RETURN node
-}
 ```
 
 ```py tab="Python"

@@ -11,10 +11,9 @@ Get the node that the edge originates from.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_follower_from_relationship(relationshipID: ID) {
+QUERY get_follower_from_relationship(relationshipID: ID) =>
     follower <- E<Follows>(relationshipID)::FromN
     RETURN follower
-}
 ```
 
 ```py tab="Python"
@@ -43,10 +42,9 @@ Get the node that the edge points to.
 **Example:**
 
 ```text tab="Helix"
-QUERY get_following_from_relationship(relationshipID: ID) {
+QUERY get_following_from_relationship(relationshipID: ID) =>
     followed_user <- E<Follows>(relationshipID)::ToN
     RETURN followed_user
-}
 ```
 
 ```py tab="Python"

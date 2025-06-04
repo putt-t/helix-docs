@@ -14,7 +14,7 @@ N<Type>(node_id)
 **Example:**
 
 ```text tab="Helix"
-QUERY get_users(userID: String) {
+QUERY get_users(userID: String) =>
     // Select all nodes
     nodes <- N
     
@@ -28,7 +28,6 @@ QUERY get_users(userID: String) {
     other_users <- N<Users>(userID, "other_uuid")
     
     RETURN nodes, users, user, other_users
-}
 ```
 
 ```py tab="Python"
@@ -57,7 +56,7 @@ E<Type>(edge_id)
 **Example**
 
 ```text tab="Helix"
-QUERY get_followers(edgeID: String) {
+QUERY get_followers(edgeID: String) =>
     // Select all edges
     edges <- E
     
@@ -71,7 +70,6 @@ QUERY get_followers(edgeID: String) {
     other_edges <- E<Follows>(edgeID, "other_edge_id")
     
     RETURN edges, specific_edges, follow_edge, other_edges
-}
 ```
 
 ```py tab="Python"
