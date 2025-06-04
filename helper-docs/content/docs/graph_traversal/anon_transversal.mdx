@@ -1,0 +1,36 @@
+---
+title: Anonymous Traversals
+description: Anonymous traversals are used as inner traversals that don’t break the overall traversal flow. They continue as a ‘sub-traversal’ starting from the previous step.
+---
+### Anonymous Transversal
+
+```text tab="Helix"
+_::<traversal>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY filter_users() =>
+    users <- N<User>::WHERE(_::In<Follows>::COUNT::GT(1))::Out<Follows>
+    RETURN users
+```
+
+```py tab="Python"
+class filter_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(filter_users())
+```
+
+This query will filter the users by the number of followers they have without breaking the overall traversal flow.
+
+To clarify, this means that the `_::` starts a new traversal that start from the elements returned by the previous step.

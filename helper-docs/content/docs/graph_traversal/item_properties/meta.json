@@ -1,0 +1,5 @@
+{
+    "title": "Item Properties",
+    "pages": ["property_access", "property_addition", "property_exclusion", "property_remappings"],
+    "defaultOpen": false
+}

@@ -5,6 +5,8 @@
         "add_nodes_edges", 
         "traversal_steps",
         "conditional_steps",
+        "anon_transversal",
+        "item_properties",
         "drop",
         "update",
         "operational_steps"

@@ -1,0 +1,154 @@
+---
+title: Property Access
+description: Accessing or modifying properties of a node, edge, or vector
+---
+### Accessing Properties
+You can access properties of an item by using the name of the property as defined in the schema.
+
+```text tab="Helix"
+::{<SchemaFieldNames>}
+```
+
+**Example**     
+```text tab="Helix"
+N::User{
+    Name: String, 
+    Email: String,
+    Age: U32,
+    Posts: U32
+}
+```
+
+Here we are accessing the `Name` and `Age` properties of the first 10 users.
+
+```text tab="Helix"
+QUERY find_users() =>
+    users <- N<User>::RANGE(0, 10)
+    RETURN users::{ Name, Age }
+```
+
+```py tab="Python"
+class find_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(find_users())
+```
+
+```json tab="JSON"
+{
+    "users": [
+        {
+            "Name": "John",
+            "Age": 30
+        },
+        ...
+    ]
+}
+```
+
+### Accessing ID
+
+```text tab="Helix"
+::ID
+```
+
+Here we are accessing the `ID` of the first 10 users.
+
+```text tab="Helix"
+QUERY find_users() =>
+    users <- N<User>::RANGE(0, 10)
+    RETURN users::ID
+```
+
+```py tab="Python"
+class find_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(find_users())
+```
+
+```json tab="JSON"
+{
+    "users": [
+        {
+            "id": "c2ca233f-0cd8-4fae-8136-b40593792071"
+        },
+        ...
+    ]
+}
+```
+
+### Spread Operator
+Using the spread operator, you can remap values while including all 
+other properties of the selected element in the returned object.
+
+```text tab="Helix"
+::{
+    userID: ID,
+    .. 
+}
+```
+
+**Example**
+
+```text tab="Helix"
+N::User{
+    name: String,
+    age: U32,
+}
+```
+
+Here we are returning properties and remapping the `ID` field to `userID` for the first 10 users.
+
+```text tab="Helix"
+QUERY find_users() =>
+    users <- N<User>::RANGE(0, 10)
+    RETURN users::{
+        userID: ID,
+        .. 
+    }
+```
+
+```py tab="Python"
+class find_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(find_users())
+```
+
+```json tab="JSON"
+{
+    "users": [
+        {
+            "userID": "c2ca233f-0cd8-4fae-8136-b40593792071",
+            "name": "John",
+            "age": 30
+        },
+        ...
+    ]
+}
+```
