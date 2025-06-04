@@ -9,5 +9,3 @@ N::User {
     updated_at: I32,
 }
 
-
-
