@@ -1,7 +1,10 @@
 {
     "title": "Graph Traversal",
     "pages": [
-        "..."
+        "source_steps", 
+        "add_nodes_edges", 
+        "traversal_steps",
+        "operational_steps"
     ],
     "defaultOpen": false
 }
