@@ -1,0 +1,28 @@
+---
+title: Drop
+---
+
+Drops elements from your database. The DROP effects the elements returned by the traversal.
+
+```text tab="Helix"
+QUERY drop_following(userID: ID) =>
+    DROP N<User>(userID)::Out<Follows>
+    RETURN NONE
+```
+
+```py tab="Python"
+class drop_following(helix.Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+# user1[0]['user'][0]['id'] gets their uuid
+db.query(drop_following(user1[0]['user'][0]['id']))
+```
