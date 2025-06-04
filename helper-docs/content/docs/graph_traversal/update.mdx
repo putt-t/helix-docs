@@ -1,0 +1,30 @@
+---
+title: Update
+---
+
+Update the properties of existing elements.
+
+```text tab="Helix"
+QUERY update_user(userID: ID, name: String, age: U32) =>
+    updatedUsers <- N<User>(userID)::UPDATE({name: name, age: age})
+    RETURN updatedUsers
+```
+
+```py tab="Python"
+class update_user(Query):
+    def __init__(self, userID: str, name: str, age: int):
+        super().__init__()
+        self.userID = userID
+        self.name = name
+        self.age = age
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID, "name": self.name, "age": self.age}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+# user1[0]['user'][0]['id'] gets their uuid
+db.query(update_user(user1[0]['user'][0]['id'], "LEBRONNNNNN", 32)) 
+```

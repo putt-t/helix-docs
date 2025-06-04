@@ -1,6 +1,12 @@
 {
     "title": "Documentation",
-    "pages": ["schema_definitions", "query_structure", "graph_traversal", "cookbook"],
+    "pages": [
+        "cookbook",
+        "schema_definitions",
+        "query_structure",
+        "graph_traversal",
+        "update"
+    ],
     "defaultOpen": false,
     "root": true
 }
