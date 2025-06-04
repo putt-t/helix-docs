@@ -4,6 +4,9 @@
         "source_steps", 
         "add_nodes_edges", 
         "traversal_steps",
+        "conditional_steps",
+        "drop",
+        "update",
         "operational_steps"
     ],
     "defaultOpen": false

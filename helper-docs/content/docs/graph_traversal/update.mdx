@@ -5,6 +5,12 @@ title: Update
 Update the properties of existing elements.
 
 ```text tab="Helix"
+::UPDATE({<properties_list>})
+```
+
+**Example:**
+
+```text tab="Helix"
 QUERY update_user(userID: ID, name: String, age: U32) =>
     updatedUsers <- N<User>(userID)::UPDATE({name: name, age: age})
     RETURN updatedUsers

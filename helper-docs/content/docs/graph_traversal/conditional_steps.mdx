@@ -1,0 +1,195 @@
+---
+title: Conditional Steps
+description: Filter and conditionally select elements in your graph. These operations allow you to filter and select specific elements from your graph based on conditions.
+---
+
+### `WHERE`
+Filter elements based on specific conditions.
+
+```text tab="Helix"
+::WHERE <condition>
+```
+
+The condition in the `WHERE` step must evaluate to a boolean value. 
+If the condition is not met, the element will be filtered out.
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_adult_users() =>
+    // Filter to only users over 18
+    adult_users <- N<User>::WHERE(_::{age}::GT(18))
+    RETURN adult_users
+```
+
+```py tab="Python"
+class get_adult_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_adult_users())
+```
+
+### Comparison Operations
+The following operations can be used to compare values. 
+
+
+**String, Boolean, and Number Operations**
+|**Operation**|**Description**|**Example**|
+|---|---|---|
+|`::EQ(value)`|Equals|`::WHERE(_::{status}::EQ("active"))`|
+|`::NEQ(value)`|Not equals|`::WHERE(_::{age}::NEQ(25))`|
+
+**Number Operations**
+|**Operation**|**Description**|**Example**|
+|---|---|---|
+|`::GT(value)`|Greater than|`::WHERE(_::{age}::GT(21))`|
+|`::LT(value)`|Less than|`::WHERE(_::{age}::LT(21))`|
+|`::GTE(value)`|Greater than or equal to|`::WHERE(_::{age}::GTE(21))`|
+|`::LTE(value)`|Less than or equal to|`::WHERE(_::{age}::LTE(21))`|
+
+### `EXISTS`
+Returns true if a traversal has any results. Otherwise, it returns false.
+
+```text tab="Helix"
+::EXISTS <traversal>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_users_with_followers() =>
+    users <- N<User>::WHERE(EXISTS(_::In<Follows>))
+    RETURN users
+```
+
+```py tab="Python"
+class get_users_with_followers(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_users_with_followers())
+```
+
+### Multiple filter conditions
+In the case where you want to filter by multiple conditions, 
+you can use the AND and OR operations to chain the conditions together.
+
+Both `AND` and `OR` take a list of expressions that evaluate to a boolean value. 
+`AND` and `OR` will return a boolean value themselves.
+
+`AND`
+
+```text tab="Helix"
+::WHERE(AND(<condition1>, <condition2>))
+```
+
+`OR`
+
+```text tab="Helix"
+::WHERE(OR(<condition1>, <condition2>))
+```
+
+**AND Example:**
+
+```text tab="Helix"
+QUERY get_adult_users() =>
+    // Filter to only users over 18 AND under 21
+    adult_users <- N<User>::WHERE(
+        AND(
+            _::{age}::GT(18), 
+            _::{age}::LT(21)
+        )
+    )
+    RETURN adult_users
+```
+
+```py tab="Python"
+class get_adult_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_adult_users())
+```
+
+**OR Example:**
+
+```text tab="Helix"
+QUERY get_other_users() =>
+    // Filter to only users under 18 OR over 21
+    other_users <- N<User>::WHERE(
+        OR(
+            _::{age}::LT(18), 
+            _::{age}::GT(21)
+        )
+    )
+    RETURN other_users
+```
+
+```py tab="Python"
+class get_other_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_other_users())
+```
+
+**AND & OR Example:**
+
+```text tab="Helix"
+QUERY get_discounted_users() =>
+    // Filter to only users over 18 AND under 21 OR over 65
+    discounted_users <- N<User>::WHERE(
+        OR(
+            AND(
+                _::{age}::GT(18), 
+                _::{age}::LT(21)
+            ),
+            _::{age}::GT(65)
+        )
+    )
+    RETURN discounted_users
+```
+
+```py tab="Python"
+class get_discounted_users(Query):
+    def __init__(self):
+        super().__init__()
+    
+    def query(self) -> List[Payload]:
+        return [{}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_discounted_users())
+```

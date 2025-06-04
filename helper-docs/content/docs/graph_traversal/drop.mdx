@@ -5,6 +5,15 @@ title: Drop
 Drops elements from your database. The DROP effects the elements returned by the traversal.
 
 ```text tab="Helix"
+DROP <traversal>
+```
+
+You can use the drop on any traversal that returns a list of elements. 
+DROP will do nothing if the result of the expression is not a list of elements or if the list is empty.
+
+**Example:**
+
+```text tab="Helix"
 QUERY drop_following(userID: ID) =>
     DROP N<User>(userID)::Out<Follows>
     RETURN NONE
