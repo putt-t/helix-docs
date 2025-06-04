@@ -74,7 +74,7 @@ AddE<Type>({properties})::From(v1)::To(v2)
 **Example: Adding Edges**
 
 ```text tab="Helix"
-QUERY create_relationships(user1ID: String, user2ID: String) =>
+QUERY create_relationships(user1ID: ID, user2ID: ID) =>
     // Get the users by their IDs
     user1 <- N<User>(user1ID)
     user2 <- N<User>(user2ID)
@@ -84,14 +84,14 @@ QUERY create_relationships(user1ID: String, user2ID: String) =>
 
     RETURN follows
         
-QUERY create_detailed_relationships(user1ID: String, user2ID: String, since: String, strength: F32, tags: [String]) =>
+QUERY create_detailed_relationships(user1ID: ID, user2ID: ID, since: String) =>
     // Get the users by their IDs
     user1 <- N<User>(user1ID)
     user2 <- N<User>(user2ID)
     
     // Create a detailed friendship with properties
-    friendship <- AddE<Friends>(
-        {since: since, strength: strength, tags: tags}
+    friendship <- AddE<Follows>(
+        {since: since}
     )::From(user1)::To(user2)
     
     RETURN friendship
@@ -114,29 +114,27 @@ class create_relationships(Query):
 db.query(create_relationships("<user1ID>", "<user2ID>"))
 
 class create_detailed_relationships(Query):
-    def __init__(self, user1ID: str, user2ID: str, since: str, strength: float, tags: List[str]):
+    def __init__(self, user1ID: str, user2ID: str, since: str):
         super().__init__()
         self.user1ID = user1ID
         self.user2ID = user2ID
         self.since = since
-        self.strength = strength
-        self.tags = tags
     
     def query(self) -> List[Payload]:
-        return [{"user1ID": self.user1ID, "user2ID": self.user2ID, "since": self.since, "strength": self.strength, "tags": self.tags}]
+        return [{"user1ID": self.user1ID, "user2ID": self.user2ID, "since": self.since}]
     
     def response(self, response):
         return response
 
 #### Example ####
-db.query(create_detailed_relationships("<user1ID>", "<user2ID>", "<since>", <strength>, ["<tag1>", "<tag2>"]))
+db.query(create_detailed_relationships("<user1ID>", "<user2ID>", "<since>"))
 ```
 
 **Example: Adding Edges in a Traversal**
 You can also use the `AddE` operation in the middle of a traversal to add edges between a list of nodes or vectors.
 
 ```text tab="Helix"
-QUERY create_friendships(user1ID: String, user2ID: String) =>
+QUERY create_friendships(user1ID: ID, user2ID: ID) =>
     // This makes every user in the database follow the user with ID user1ID
     user1 <- N<User>::AddE<Follows>::To(N(user1ID))
     

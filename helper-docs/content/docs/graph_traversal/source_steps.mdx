@@ -14,7 +14,7 @@ N<Type>(node_id)
 **Example:**
 
 ```text tab="Helix"
-QUERY get_users(userID: String) =>
+QUERY get_users(userID: ID) =>
     // Select all nodes
     nodes <- N
     
@@ -56,7 +56,7 @@ E<Type>(edge_id)
 **Example**
 
 ```text tab="Helix"
-QUERY get_followers(edgeID: String) =>
+QUERY get_followers(edgeID: ID) =>
     // Select all edges
     edges <- E
     
