@@ -1,0 +1,5 @@
+{
+    "title": "Traversal Steps",
+    "pages": ["traversal_from_nodes", "traversal_from_edges"],
+    "defaultOpen": false
+}

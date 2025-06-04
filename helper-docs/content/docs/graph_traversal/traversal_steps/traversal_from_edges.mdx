@@ -1,0 +1,64 @@
+---
+title: Traversals from Edges
+---
+### `FromN`
+Get the node that the edge originates from.
+
+```text tab="Helix"
+::FromN
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_follower_from_relationship(relationshipID: ID) =>
+    follower <- E<Follows>(relationshipID)::FromN
+    RETURN follower
+```
+
+```py tab="Python"
+class get_follower_from_relationship(Query):
+    def __init__(self, relationshipID: str):
+        super().__init__()
+        self.relationshipID = relationshipID
+    
+    def query(self) -> List[Payload]:
+        return [{"relationshipID": self.relationshipID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_follower_from_relationship("<relationshipID>"))
+```
+
+### `ToN`
+Get the node that the edge points to.
+
+```text tab="Helix"
+::ToN
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_following_from_relationship(relationshipID: ID) =>
+    followed_user <- E<Follows>(relationshipID)::ToN
+    RETURN followed_user
+```
+
+```py tab="Python"
+class get_following_from_relationship(Query):
+    def __init__(self, relationshipID: str):
+        super().__init__()
+        self.relationshipID = relationshipID
+    
+    def query(self) -> List[Payload]:
+        return [{"relationshipID": self.relationshipID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_following_from_relationship("<relationshipID>"))
+```

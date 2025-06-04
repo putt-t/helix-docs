@@ -1,0 +1,132 @@
+---
+title: Traversals from Nodes
+description: Once you’ve selected your starting points, these operations allow you to navigate through the graph.
+---
+### The Idea
+HelixQL is strongly typed. That means it stops you traversing edges or accessing properties that don’t exist.
+
+### `Out`
+Get the nodes connected by outgoing edges of specific type.
+
+```text tab="Helix"
+::Out<EdgeType>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_user_following(userID: ID) =>
+    following <- N<User>(userID)::Out<Follows>
+    RETURN following
+```
+
+```py tab="Python"
+class get_user_following(Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_user_following("<userID>"))
+```
+
+---
+
+### `IN`
+Get the nodes connected by incoming edges of specific type.
+
+```text tab="Helix"
+::In<EdgeType>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_user_followers(userID: ID) =>
+    followers <- N<User>(userID)::In<Follows>
+    RETURN followers
+```
+
+```py tab="Python"
+class get_user_followers(Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_user_followers("<userID>"))
+```
+
+### `OutE`
+Get the edges connected by outgoing edges of specific type.
+
+```text tab="Helix"
+::OutE<EdgeType>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_following_details(userID: ID) =>
+    following <- N<User>(userID)::OutE<Follows>
+    RETURN following
+```
+
+```py tab="Python"
+class get_following_details(Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_following_details("<userID>"))
+```
+
+### `InE`
+Get the edges connected by incoming edges of specific type.
+
+```text tab="Helix"
+::InE<EdgeType>
+```
+
+**Example:**
+
+```text tab="Helix"
+QUERY get_followers_details(userID: ID) =>
+    followers <- N<User>(userID)::InE<Follows>
+    RETURN followers
+```
+
+```py tab="Python"
+class get_followers_details(Query):
+    def __init__(self, userID: str):
+        super().__init__()
+        self.userID = userID
+    
+    def query(self) -> List[Payload]:
+        return [{"userID": self.userID}]
+    
+    def response(self, response):
+        return response
+
+#### Example ####
+db.query(get_followers_details("<userID>"))
+```
