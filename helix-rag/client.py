@@ -1,6 +1,6 @@
 from helix.loader import Loader
 from helix.types import GHELIX, RHELIX, Payload
-from helix.instance import Instance
+from instance import Instance # TODO: This was originally `from helix.instance import Instance`
 import socket
 import json
 import urllib.request
@@ -116,7 +116,7 @@ class Client:
         self.h_server_port = port
         self.h_server_api_endpoint = "" if local else api_endpoint
         self.h_server_url = "http://0.0.0.0" if local else ("https://api.helix-db.com/" + self.h_server_api_endpoint)
-        self.instance = Instance("helixdb-cfg", port, verbose=True)
+        self.instance = Instance("helixdb-cfg", port, verbose=False)
         try:
             if local:
                 self.instance.deploy()
