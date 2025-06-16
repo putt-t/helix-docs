@@ -11,6 +11,7 @@ import numpy as np
 from tqdm import tqdm
 import sys
 import atexit
+import time
 
 class Query(ABC):
     def __init__(self, endpoint: Optional[str]=None):
@@ -120,8 +121,9 @@ class Client:
         try:
             self.instance.deploy(redeploy=redeploy)
             atexit.register(self.instance.stop)
-            
+
             hostname = self.h_server_url.replace("http://", "").replace("https://", "").split("/")[0]
+            time.sleep(0.1) # Wait for server to spin up TODO: Need better fix
             socket.create_connection((hostname, self.h_server_port), timeout=5)
             print(f"{GHELIX} Helix instance found at '{self.h_server_url}:{self.h_server_port}'", file=sys.stderr)
         except socket.error:
