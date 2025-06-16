@@ -219,8 +219,6 @@ class Instance:
             if not self.verbose: print("\n".join(output), file=sys.stderr)
             raise Exception(f"{RHELIX} Failed to delete Helix instance")
 
-            
-        print(self.port_ids, file=sys.stderr)
         del self.port_ids[self.port]
         del self.ids_running[self.instance_id]
         self.instance_id = None

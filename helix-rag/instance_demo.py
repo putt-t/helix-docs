@@ -146,6 +146,7 @@ for user in db.query(get_users())[0]['users']:
 print("\n")
 
 print("-"*20 + "CREATE FOLLOW" + "-"*20)
+print("Jane follows John")
 print(db.query(create_follow(user1_id, user2_id, 1892222222)))
 print("\n")
 
@@ -162,6 +163,7 @@ for post in db.query(get_posts())[0]['posts']:
 print("\n")
 
 print("-"*20 + "GET POSTS BY USER" + "-"*20)
+print(f"Should get {content1}")
 for post in db.query(get_posts_by_user(user1_id))[0]['posts']:
     print(post)
 print("\n")
@@ -176,11 +178,12 @@ for post in db.query(get_followed_users_posts(user1_id))[0]['posts']:
     print(post)
 print("\n")
 
-print("-"*20 + "NEW INSTANCE" + "-"*20)
+print("-"*20 + "NEW INSTANCE TO TERMINATE" + "-"*20)
 delete_db = Client(local=True, port=6970)
 print("\n")
 
 print("-"*20 + "STATUS" + "-"*20)
+print("Should have 2 instances running")
 print(delete_db.instance.status())
 print("\n")
 
@@ -189,8 +192,10 @@ delete_db.terminate()
 print("\n")
 
 print("-"*20 + "STATUS" + "-"*20)
+print("Should have 1 instance running")
 print(delete_db.instance.status())
 print("\n")
 
-print("Should have 1 instance not running, try running `helix instances` to see")
+print("Should have 1 instance not running after script ends")
+print("Try running `helix instances` to see")
 print(f"\nRun `helix delete {db.instance.instance_id}` to delete the instance")

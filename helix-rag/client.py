@@ -118,9 +118,9 @@ class Client:
         self.h_server_url = "http://0.0.0.0" if local else ("https://api.helix-db.com/" + self.h_server_api_endpoint)
         self.instance = Instance("helixdb-cfg", port, verbose=False)
         try:
-            if local:
-                self.instance.deploy(redeploy=redeploy)
-                atexit.register(self.instance.stop)
+            self.instance.deploy(redeploy=redeploy)
+            atexit.register(self.instance.stop)
+            
             hostname = self.h_server_url.replace("http://", "").replace("https://", "").split("/")[0]
             socket.create_connection((hostname, self.h_server_port), timeout=5)
             print(f"{GHELIX} Helix instance found at '{self.h_server_url}:{self.h_server_port}'", file=sys.stderr)
