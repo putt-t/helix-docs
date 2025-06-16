@@ -112,14 +112,14 @@ class next(Query):
 #   have it running already before starting script
 #   maybe try a .init to start from python script
 class Client:
-    def __init__(self, local: bool, port: int=6969, api_endpoint: str=""):
+    def __init__(self, local: bool, port: int=6969, api_endpoint: str="", redeploy: bool=False):
         self.h_server_port = port
         self.h_server_api_endpoint = "" if local else api_endpoint
         self.h_server_url = "http://0.0.0.0" if local else ("https://api.helix-db.com/" + self.h_server_api_endpoint)
         self.instance = Instance("helixdb-cfg", port, verbose=False)
         try:
             if local:
-                self.instance.deploy()
+                self.instance.deploy(redeploy=redeploy)
                 atexit.register(self.instance.stop)
             hostname = self.h_server_url.replace("http://", "").replace("https://", "").split("/")[0]
             socket.create_connection((hostname, self.h_server_port), timeout=5)
@@ -155,3 +155,12 @@ class Client:
 
         return responses
 
+    def terminate(self):
+        if input("Are you sure you want to delete the instance and its data? (y/n): ") == "y":
+            self.instance.delete()
+            atexit.unregister(self.instance.stop)
+            print(f"{GHELIX} Instance deleted", file=sys.stderr)
+        else:
+            self.instance.stop()
+            atexit.unregister(self.instance.stop)
+            print(f"{GHELIX} Instance stopped", file=sys.stderr)
